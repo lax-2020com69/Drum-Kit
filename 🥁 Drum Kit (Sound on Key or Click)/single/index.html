@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>🥁 Full Drum Kit</title>
+  <style>
+    body {
+      background: #121212;
+      color: #eee;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      margin-bottom: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-gap: 20px;
+      margin-top: 20px;
+    }
+    button.drum-pad {
+      background: #282c34;
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 700;
+      box-shadow: 0 6px #1a1f29;
+      cursor: pointer;
+      padding: 30px 0;
+      transition: all 0.1s ease;
+      user-select: none;
+    }
+    button.drum-pad:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px #1a1f29;
+      background-color: #444;
+    }
+    .key-label {
+      display: block;
+      font-size: 14px;
+      margin-top: 6px;
+      color: #bbb;
+      font-weight: 400;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>🥁 Drum Kit</h1>
+  <p>Press keys or click buttons to play sounds</p>
+  <div class="container">
+    <button class="drum-pad" data-key="A" aria-label="Heater 1">
+      A <span class="key-label">Heater 1</span>
+    </button>
+    <button class="drum-pad" data-key="S" aria-label="Heater 2">
+      S <span class="key-label">Heater 2</span>
+    </button>
+    <button class="drum-pad" data-key="D" aria-label="Heater 3">
+      D <span class="key-label">Heater 3</span>
+    </button>
+    <button class="drum-pad" data-key="F" aria-label="Heater 4">
+      F <span class="key-label">Heater 4</span>
+    </button>
+    <button class="drum-pad" data-key="G" aria-label="Clap">
+      G <span class="key-label">Clap</span>
+    </button>
+    <button class="drum-pad" data-key="H" aria-label="Open HH">
+      H <span class="key-label">Open HH</span>
+    </button>
+    <button class="drum-pad" data-key="J" aria-label="Kick n' Hat">
+      J <span class="key-label">Kick n' Hat</span>
+    </button>
+    <button class="drum-pad" data-key="K" aria-label="Kick">
+      K <span class="key-label">Kick</span>
+    </button>
+    <button class="drum-pad" data-key="L" aria-label="Closed HH">
+      L <span class="key-label">Closed HH</span>
+    </button>
+  </div>
+
+  <script>
+    const sounds = {
+      A: "https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3",
+      S: "https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3",
+      D: "https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3",
+      F: "https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3",
+      G: "https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3",
+      H: "https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3",
+      J: "https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3",
+      K: "https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3",
+      L: "https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3"
+    };
+
+    function playSound(key) {
+      const audioSrc = sounds[key];
+      if (!audioSrc) return;
+
+      const audio = new Audio(audioSrc);
+      audio.currentTime = 0; // allow fast repeat pressing
+      audio.play();
+
+      const button = document.querySelector(`button[data-key="${key}"]`);
+      if (button) {
+        button.classList.add('active');
+        setTimeout(() => button.classList.remove('active'), 100);
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      const key = e.key.toUpperCase();
+      if (sounds[key]) {
+        playSound(key);
+      }
+    });
+
+    document.querySelectorAll('.drum-pad').forEach(button => {
+      button.addEventListener('click', () => {
+        playSound(button.getAttribute('data-key'));
+      });
+    });
+	
+	document.addEventListener('keydown', (e) => {
+	  const key = e.key.toUpperCase();
+	  if (sounds[key]) {
+		playSound(key);
+	  }
+	});
+	
+  </script>
+
+  <footer>Original sounds from FreeCodeCamp Drum Machine</footer>
+</body>
+</html>
